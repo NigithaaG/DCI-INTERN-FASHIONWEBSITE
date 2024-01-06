@@ -296,7 +296,7 @@ def edit_and_save_customer_profile(request, customerid):
 
         return redirect('customer_profile', customer_id=customerid)
 
-    return render(request, 'edit_customer_profile.html', {'user_details': user_details})
+    return render(request, 'edit_customer_profile.html', {'user_details': user_details,'customer':customerid})
 
 def add_to_cart(request , customer_id , product_id):
     cart_details = UserCart(
@@ -437,7 +437,7 @@ def confirm_order(request,customer_id):
     # Retrieve the order details for the given product
     # confirm = OrderDetails.objects.filter(product_ordered_id=product.product_id)
 
-    return render(request, "confirm_order.html", {"product": product_details_list})
+    return render(request, "confirm_order.html", {"product": product_details_list ,'customer':customer_id})
     
 
 def delete_product(request, customer_id, product_id):
@@ -451,7 +451,7 @@ def customer_profile(request, customer_id):
         user_details = UserProfile.objects.get(id=customer_id)
     except UserProfile.DoesNotExist:
         return render(request, 'customer_homepage.html')  
-    return render(request, 'customerprofile.html', {'customer_details': user_details})
+    return render(request, 'customerprofile.html', {'customer_details': user_details,'cus':customer_id})
 
 def landing_page_view(request):
     return render(request, 'landingpage.html')
@@ -476,12 +476,14 @@ def product_details(request, product_id, cust_id):
         'reviews': reviews,
         'overall_rating': overall_rating,
         'star_ratings': star_ratings,
+        
     }
     return render(request, 'product_display.html', context)
 
 from django.shortcuts import render
 
 def visualize(request, vendor_id):
+    user = get_object_or_404(UserProfile,id=vendor_id)
     # Load the dataset
     df = pd.read_csv("./fashionapp/product_dataset_with_order_details.csv")
 
@@ -516,7 +518,7 @@ def visualize(request, vendor_id):
     fig5_modified_div = plot(fig5_modified, output_type='div', include_plotlyjs=False)
 
     # Pass the HTML strings to the template along with vendor_id
-    return render(request, 'visualize.html', {'vendor_id': vendor_id, 'plot_div1': plot_div1, 'fig2_div': fig2_div, 'fig3_div': fig3_div, 'fig4_div': fig4_div, 'fig5_modified_div': fig5_modified_div})
+    return render(request, 'visualize.html', {'vendor_id': vendor_id, 'plot_div1': plot_div1, 'fig2_div': fig2_div, 'fig3_div': fig3_div, 'fig4_div': fig4_div, 'fig5_modified_div': fig5_modified_div,'vend':user})
 
 def prod_rev(req, cust_id,prodid):
     if req.method == 'POST':

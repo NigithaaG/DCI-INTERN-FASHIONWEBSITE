@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizations for Vendor {{ vendor_id }}</title>
+    <title>Vendor Dashboard - Visualizations for Vendor {{ vendor_id }}</title>
     <!-- Include jQuery and jQuery UI libraries -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -19,156 +19,110 @@
             color: #333;
         }
 
-        h2 {
-            color: #007bff;
-            margin-bottom: 15px;
+        header {
+            background-color: rgba(138, 205, 215, 0.7);
+            box-shadow: 0 4px 2px -2px gray;
+            padding: 10px 0;
+            text-align: center;
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
         }
 
         .visualization-container {
+            flex: 1 0 calc(33.33% - 40px);
+            margin: 20px;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            display: none; /* Initially hide visualization containers */
-        }
-
-        button {
-            margin: 5px;
-            padding: 10px;
-            font-size: 14px;
-            cursor: pointer;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-        }
-
-        .navbar {
-            overflow: hidden;
-            background-color: #007bff;
-            position: fixed;
-            top: 0;
-            width: 100%;
-        }
-
-        .navbar a {
-            float: left;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-
-        .slideshow-container {
+            background-color: rgba(138, 205, 215, 0.7);
             position: relative;
-            max-width: 800px;
-            margin: auto;
-            margin-top: 70px;
             overflow: hidden;
-        }
-
-        .mySlides {
-            display: none;
-            animation: fade 1s ease-out;
-        }
-
-        @keyframes fade {
-            from { opacity: 0.4; }
-            to { opacity: 1; }
-        }
-
-        .prev, .next {
-            position: absolute;
-            top: 50%;
-            padding: 10px;
-            font-size: 18px;
+            transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
-            color: #007bff;
-            background-color: transparent;
-            border: none;
-            border-radius: 4px;
-            margin-top: -20px;
-            transition: background-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            height: 500px; /* Set a fixed height */
         }
 
-        .prev:hover, .next:hover {
-            background-color: #007bff;
-            color: #fff;
+        .visualization-container h2 {
+            color: white;
+            margin-bottom: 15px;
+            text-align: center;
         }
 
-        .next {
-            right: 0;
+        .visualization-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Add subtle animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Apply the animation to the visualization containers */
+        .visualization-container {
+            animation: fadeIn 0.5s ease-out;
         }
     </style>
 </head>
-<body>
-    <div class="navbar">
-        <a onclick="currentSlide(1)">Sales Performance</a>
-        <a onclick="currentSlide(2)">Monthly Sales Trend</a>
-        <a onclick="currentSlide(3)">Order Status Distribution</a>
-        <a onclick="currentSlide(4)">Category-wise Sales</a>
-        <a onclick="currentSlide(5)">Monthly State-wise Revenue</a>
-    </div>
 
-    <div class="slideshow-container">
-        <div class="visualization-container mySlides" id="viz1">
-            <h2>Sales Performance for Vendor {{ vendor_id }}</h2>
+<body>
+    <header>
+        <h1>Vendor Dashboard</h1>
+        <p>Visualizations for {{ vend.name }}</p>
+    </header>
+
+    <div class="dashboard">
+        <div class="visualization-container" id="viz1">
+            <h2>Sales Performance for {{ vend.name }}</h2>
             {{ plot_div1|safe }}
         </div>
 
-        <div class="visualization-container mySlides" id="viz2">
-            <h2>Monthly Sales Trend for Vendor {{ vendor_id }}</h2>
+        <div class="visualization-container" id="viz2">
+            <h2>Monthly Sales Trend for {{ vend.name }}</h2>
             {{ fig2_div|safe }}
         </div>
 
-        <div class="visualization-container mySlides" id="viz3">
-            <h2>Order Status Distribution for Vendor {{ vendor_id }}</h2>
+        <div class="visualization-container" id="viz3">
+            <h2>Order Status Distribution for {{ vend.name }}</h2>
             {{ fig3_div|safe }}
         </div>
 
-        <div class="visualization-container mySlides" id="viz4">
-            <h2>Category-wise Sales for Vendor {{ vendor_id }}</h2>
+        <div class="visualization-container" id="viz4">
+            <h2>Category-wise Sales for {{ vend.name }}</h2>
             {{ fig4_div|safe }}
         </div>
 
-        <div class="visualization-container mySlides" id="viz5">
-            <h2>Monthly State-wise Revenue for Vendor {{ vendor_id }}</h2>
+        <div class="visualization-container" id="viz5">
+            <h2>Monthly State-wise Revenue for {{ vend.name }}</h2>
             {{ fig5_modified_div|safe }}
         </div>
-
-        <button class="prev" onclick="plusSlides(-1)">❮</button>
-        <button class="next" onclick="plusSlides(1)">❯</button>
     </div>
 
     <script>
-        let slideIndex = 1;
-        showSlides(slideIndex);
+        function showGraph(n) {
+            let visualizationContainers = document.querySelectorAll('.visualization-container');
+            visualizationContainers.forEach(container => {
+                container.style.display = 'none';
+            });
 
-        function plusSlides(n) {
-            showSlides(slideIndex += n);
-        }
-
-        function currentSlide(n) {
-            showSlides(slideIndex = n);
-        }
-
-        function showSlides(n) {
-            let i;
-            let slides = document.getElementsByClassName("mySlides");
-            if (n > slides.length) { slideIndex = 1 }
-            if (n < 1) { slideIndex = slides.length }
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            slides[slideIndex - 1].style.display = "block";
+            document.getElementById(viz${n}).style.display = 'block';
         }
     </script>
 </body>
+
 </html>
