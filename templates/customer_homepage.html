@@ -149,7 +149,7 @@
               Kids
             </a>
             <div class="dropdown-menu" aria-labelledby="menDropdown">
-              {% for subcategory in kids_subcategories %}
+              {% for subcategory in men_subcategories %}
               <a class="dropdown-item" href="{% url 'product_categories' subcategory=subcategory customer_id=customer.id %}">{{ subcategory }}</a>
               {% endfor %}
             </div>
