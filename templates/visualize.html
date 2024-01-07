@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vendor Dashboard - Visualizations for Vendor {{ vendor_id }}</title>
-    <!-- Include jQuery and jQuery UI libraries -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -47,9 +46,9 @@
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Center vertically */
-            align-items: center; /* Center horizontally */
-            height: 500px; /* Set a fixed height */
+            justify-content: center; 
+            align-items: center; 
+            height: 500px; 
         }
 
         .visualization-container h2 {
@@ -63,7 +62,6 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
 
-        /* Add subtle animation */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -73,7 +71,6 @@
             }
         }
 
-        /* Apply the animation to the visualization containers */
         .visualization-container {
             animation: fadeIn 0.5s ease-out;
         }
